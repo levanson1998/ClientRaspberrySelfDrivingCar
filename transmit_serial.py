@@ -1,10 +1,10 @@
+
 import serial
 import time
 from threading import Thread, Timer
 import os
 import sys
 import numpy as np
-
 
 a=1
 
@@ -20,7 +20,7 @@ time_t=0.1
 t=0
 
 ser = serial.Serial(
-    port = 'COM8',
+    port = 'COM8', # /dev/ttyAMA0 /dev/ttyUSB0
     baudrate = 115200,
     parity = serial.PARITY_NONE,
     stopbits = serial.STOPBITS_ONE,
@@ -65,8 +65,8 @@ def send_serial():
     t+=1
     
     next_call = next_call + time_t
+    # Timer = threading.Timer
     Timer( next_call - time.time(), send_serial ).start()
-
 send_serial()
 
 # from (Pi, android, android)
@@ -76,6 +76,3 @@ def SerialProcess(aIn, isStartIn, SttSpeedIn):
     isStart=isStartIn
     SttSpeed=SttSpeedIn
     return speedCurrent
-
-
-

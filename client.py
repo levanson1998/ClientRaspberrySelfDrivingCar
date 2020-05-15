@@ -24,6 +24,7 @@ def on_connect():
 	sio.emit('car-on',True)		
 
 @sio.on('car-send-stt-ok')
+
 def on_message(data):
 	print('Server has received your status\n')
 
@@ -60,7 +61,6 @@ def on_disconnect():
 	except:
 		print("I'm disconnected !")
 
-
 # chup hinh anh tu camera
 def capturePic():
 	with open("./image.jpg","rb") as file:
@@ -69,8 +69,15 @@ def capturePic():
 
 def sioSendStt():
 	global status, speed
+	pic = capturePic()
+	capturedTime = datetime.datetime.now().strftime("%Y-%m-%d %H-%M-%S")
 	while True:
-		mydict = {"status":status,"speed":speed}
+		if(status==("Stop" or "Lost")):
+			pic = capturePic()
+			capturedTime = datetime.datetime.now().strftime("%Y-%m-%d %H-%M-%S")
+			print(capturedTime)
+			# mydict_img = {"Image": "data:image/jpg;base64," + pic.decode("utf-8"), "CapTime":capturedTime}
+		mydict = {"status":status,"speed":speed, "Image": "data:image/jpg;base64," + pic.decode("utf-8"), "CapTime":capturedTime}
 		sio.emit("car-send-stt", mydict)
 		print("sioSendStt status: {}  speed: {}".format(status, speed))
 		sleep(4)
