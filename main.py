@@ -1,7 +1,7 @@
 from time import sleep
 from client import SocketProcess
 # from transmit_serial import SerialProcess
-
+ReStop=1
 SpeedCurrent=20
 isTracking = 1
 PiStop=0
@@ -12,14 +12,14 @@ i=0
 # start? = (btbStart, raspStart)
 while True:
     a+=0.000001
-    isStart, sttSpeed = SocketProcess(isTracking, SpeedCurrent)
+    isStart, sttSpeed = SocketProcess(isTracking, ReStop, SpeedCurrent)
     # print("{} == {}".format(isStart, sttSpeed))
     # if(PiStop==1):
     #     isStart=0 # (stop)
 
     # z = np.polyfit(cx, cy, 3)
     # a = np.polyval(z, x)
-    # SpeedCurrent=SerialProcess(a, isStart, sttSpeed)
+    # SpeedCurrent, ReStop =SerialProcess(a, isStart, sttSpeed)
     i = (i+1)%3
     print("i: ", i)
     isTracking=i-1

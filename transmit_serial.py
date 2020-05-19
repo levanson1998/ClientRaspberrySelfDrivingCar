@@ -15,7 +15,7 @@ isStart=1
 SttSpeed=1
 # receive from stm
 speedCurrent=10
-
+ReStop =0
 time_t=0.1
 t=0
 
@@ -32,7 +32,7 @@ next_call = time.time()
 # start, stop, fast, slow, 
 # 
 def send_serial():
-    global a, isStart, SttSpeed, next_call, time_t, t, speedCurrent
+    global a, isStart, SttSpeed, next_call, time_t, t, speedCurrent, ReStop
     # 100.123 => 100 & 1230
     # 123.34556365
     # 123.3456
@@ -59,9 +59,10 @@ def send_serial():
 
     ser.write(packet)
 
-    receiveData = ser.read(2)
+    receiveData = ser.read(3)
     if(len(receiveData)!= 0):
         speedCurrent=receiveData[0]+receiveData[1]/100
+        ReStop = receiveData[2]
     t+=1
     
     next_call = next_call + time_t
@@ -71,8 +72,8 @@ send_serial()
 
 # from (Pi, android, android)
 def SerialProcess(aIn, isStartIn, SttSpeedIn):
-    global a, isStart, SttSpeed, speedCurrent
+    global a, isStart, SttSpeed, speedCurrent, ReStop
     a = aIn
     isStart=isStartIn
     SttSpeed=SttSpeedIn
-    return speedCurrent
+    return speedCurrent, ReStop
